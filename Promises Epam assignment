@@ -1,0 +1,30 @@
+const promise1 = new Promise((resolve, reject) => setTimeout(resolve, 1000, 'Result 1'));
+const promise2 = new Promise((resolve, reject) => setTimeout(resolve, 2000, 'Result 2'));
+const promise3 = new Promise((resolve, reject) => setTimeout(reject, 3000, 'Error in Promise 3'));
+const promise4 = new Promise((resolve, reject) => setTimeout(resolve, 4000, 'Result 4'));
+const promise5 = new Promise((resolve, reject) => setTimeout(resolve, 5000, 'Result 5'));
+
+async function handlePromises() {
+  const promises = [promise1, promise2, promise3, promise4, promise5];
+
+  const results = [];
+
+  for (let i = 0; i < promises.length; i++) {
+    try {
+      const result = await promises[i]; // Await the promise
+      results.push({ status: 'fulfilled', index: i + 1, value: result });
+    } catch (error) {
+      results.push({ status: 'rejected', index: i + 1, reason: error });
+    }
+  }
+
+  results.forEach(result => {
+    if (result.status === 'fulfilled') {
+      console.log(`Promise ${result.index} succeeded with value: ${result.value}`);
+    } else {
+      console.log(`Promise ${result.index} failed with reason: ${result.reason}`);
+    }
+  });
+}
+
+handlePromises();
